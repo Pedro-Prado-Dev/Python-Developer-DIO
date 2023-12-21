@@ -1,4 +1,4 @@
-def deposito(saldo_atual, extrato_atual):
+def deposito(saldo_atual, extrato_atual,/):
     deposito = float(input(f'Valor a ser Depositado:'))
 
     if (deposito > 0):
@@ -10,7 +10,7 @@ def deposito(saldo_atual, extrato_atual):
         print(f'Deposito inválido')
         return saldo_atual, extrato_atual
 
-def saque(saldo_atual, extrato_atual, numero_de_saques, limite_de_saques):
+def saque(*,saldo_atual, extrato_atual, numero_de_saques, limite_de_saques):
     saque = float(input(f'Valor a ser Sacado:'))
 
     if saque <= saldo and num_de_saques < LIMITE_SAQUES and saque <= LIMITE:
@@ -29,10 +29,10 @@ def saque(saldo_atual, extrato_atual, numero_de_saques, limite_de_saques):
         print(f'Saque maior que o limite permitido de R$500.00')
         return saldo_atual, extrato_atual, numero_de_saques
 
-def verifica_extrato(extrato):
+def verifica_extrato(saldo_atual,/,*, extrato):
     print(f'\n    ## EXTRATO ##   ')
     print(extrato)
-    print(f'Saldo - R${saldo:.2f}')
+    print(f'Saldo - R${saldo_atual:.2f}')
 
 
 menu = """
@@ -56,13 +56,13 @@ while True:
     opcao = int(input(menu))
 
     if opcao == 1:
-        saldo, extrato = deposito(saldo_atual=saldo, extrato_atual=extrato)
+        saldo, extrato = deposito(saldo,extrato)
 
     elif opcao == 2:
         saldo, extrato, num_de_saques = saque(saldo_atual=saldo, extrato_atual=extrato, numero_de_saques=num_de_saques, limite_de_saques=LIMITE_SAQUES)
 
     elif opcao == 3 :
-        verifica_extrato(extrato)
+        verifica_extrato(saldo, extrato=extrato)
 
     elif opcao == 4 :
         print(f'Saldo - R${saldo:.2f}')
