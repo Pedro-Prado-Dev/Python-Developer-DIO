@@ -34,6 +34,32 @@ def verifica_extrato(saldo_atual,/,*, extrato):
     print(extrato)
     print(f'Saldo - R${saldo_atual:.2f}')
 
+def cadastra_usuario(usuarios):
+    usuario = {}
+    
+    nome = input("Entre com o nome: ")
+    usuario["nome"] = nome
+    data_de_nasc = input("Entre com a data de nescimento: ")
+    usuario["data de nascimento"] = data_de_nasc
+    cpf = int(input("Entre com o cpf: "))
+    
+    for usuario in usuarios:
+        print(usuario["cpf"])
+        if usuario["cpf"] == cpf:
+            print("Esse cpf já está cadastrado")
+            return usuarios
+    
+    usuario["cpf"] = cpf
+    endereço = """"""
+    logadouro = input("Entre com  o Logadouro: ")
+    bairro = input("Entre com  o Bairro: ")
+    cidade = input("Entre com  a cidade: ")
+    estado = input("Entre com  o Estado: ")
+    endereço += f"""Logadouro - {logadouro}, bairro {bairro}, cidade = {cidade}, estado - {estado}"""
+    usuario["endereço"] = endereço
+    usuarios.append(usuario)
+    
+    
 
 menu = """
         ### Menu ###
@@ -41,7 +67,8 @@ menu = """
     (1) - Depositar
     (2) - Sacar
     (3) - Extrato
-    (4) - Sair
+    (4) - Cadastra Usuario
+    (6) - Sair
 
 """
 
@@ -50,6 +77,7 @@ extrato = """"""
 num_de_saques = 0
 LIMITE_SAQUES = 3
 LIMITE = 500
+usuarios = []
 
 
 while True:
@@ -63,8 +91,12 @@ while True:
 
     elif opcao == 3 :
         verifica_extrato(saldo, extrato=extrato)
-
+    
     elif opcao == 4 :
+        cadastra_usuario(usuarios)
+        print(usuarios)
+
+    elif opcao == 6 :
         print(f'Saldo - R${saldo:.2f}')
         break
     else:
