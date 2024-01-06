@@ -127,10 +127,41 @@ class Historico:
         )
 
 class Transacao(ABC):
-    pass
+    @property
+    @abstractproperty
+    def valor(self):
+        pass
+    
+    @abstractclassmethod
+    def registrar(self, conta):
+        pass
 
 class Saque(Transacao):
-    pass
+    def __init__(self, valor) -> None:
+        super().__init__()
+        self._valor = valor
+    
+    @property
+    def valor(self):
+        return self._valor
+    
+    def registrar(self,conta):
+        sucesso_transacao = conta.sacar(self.valor)
+        
+        if sucesso_transacao:
+            conta.historico.adicionar_transacao(self)
 
 class Deposito(Transacao):
-    pass
+    def __init__(self, valor) -> None:
+        super().__init__()
+        self._valor = valor
+    
+    @property
+    def valor(self):
+        return self._valor
+    
+    def registrar(self,conta):
+        sucesso_transacao = conta.depositar(self.valor)
+        
+        if sucesso_transacao:
+            conta.historico.adicionar_transacao(self)
