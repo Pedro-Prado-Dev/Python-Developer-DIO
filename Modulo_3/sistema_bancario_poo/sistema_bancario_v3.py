@@ -59,12 +59,23 @@ class Conta:
         elif valor > 0:
             self._saldo += valor
             print(f"\n Saque no valor R${valor} realizado com sucesso")
-        
+            return True
         else:
             print(f" Valor informado para saque invalido")
-
+        return False
+    
+    def depositar(self, valor):
+        if valor > 0:
+            self._saldo += valor
+            print(f"\n Deposito de R${valor} realizado com sucesso !!")
+            return True
+        else:
+            print(f"Deposito com valor inválido")
+            return False
+        
 class ContaCorrente(Conta):
-    pass
+    def __init__(self, numero, cliente) -> None:
+        super().__init__(numero, cliente)
 
 class Historico:
     pass
