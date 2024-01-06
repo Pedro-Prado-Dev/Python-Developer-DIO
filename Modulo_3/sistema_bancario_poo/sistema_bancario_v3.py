@@ -74,8 +74,40 @@ class Conta:
             return False
         
 class ContaCorrente(Conta):
-    def __init__(self, numero, cliente) -> None:
+    def __init__(self, numero, cliente, limite = 500, limite_saques=3) -> None:
         super().__init__(numero, cliente)
+        self.limite = limite
+        self.limite_saques= limite_saques
+    
+    def sacar(self, valor):
+        numero_saques = len(
+            [transacao for transacao in self.historico.
+             transacoes if transacao["tipo"] == Saque.__name__]
+        )
+        
+        excedeu_limite = valor >self.limite
+        excedeu_saques = numero_saques >= self.limite_saques
+        
+        if excedeu_limite:
+            print(f" Operações invalida, excedeu seu 
+                  limite")
+        
+        elif excedeu_saques:
+            print(f"Operação invalida, você usou seu limite
+                  de saques")
+        
+        else:
+            print(f"Sacou R${valor}")
+            return super().sacar(valor)
+        
+        return False
+    
+    def __str__(self) -> str:
+        return f"""\
+            Agencia:\t{self.agencia}
+            C/C:\t\t{self.numero}
+            Titular:\t{self.cliente.nome}
+            """          
 
 class Historico:
     pass
