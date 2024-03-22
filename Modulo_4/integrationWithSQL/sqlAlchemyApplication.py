@@ -1,5 +1,5 @@
 import sqlalchemy
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, create_engine, inspect
 from sqlalchemy.orm import declarative_base, relationship
 
 Base = declarative_base()
@@ -18,6 +18,7 @@ class User(Base):
     def __repr__(self):
         return f'User (id={self.id}, name={self.name}, full_name={self.full_name})'
 
+
 class Address(Base):
     __tablename__ = "address"
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -30,3 +31,11 @@ class Address(Base):
 
     def __repr__(self):
         return f'Address (id={self.id}, email={self.email_address})'
+
+
+engine = create_engine("sqlite://")
+
+Base.metadata.create_all(engine)
+
+inspetor_engine = inspect(engine)
+
