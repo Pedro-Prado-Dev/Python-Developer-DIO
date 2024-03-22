@@ -19,6 +19,7 @@ class User(Base):
         return f'User (id={self.id}, name={self.name}, full_name={self.full_name})'
 
 class Address(Base):
+    __tablename__ = "address"
     id = Column(Integer, primary_key=True, autoincrement=True)
     email_address = Column(String(50), unique=True, nullable=False)
     user_id = Column(Integer, ForeignKey('user_account.id'), nullable=False)
