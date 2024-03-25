@@ -1,6 +1,6 @@
 import sqlalchemy
 from sqlalchemy import Column, Integer, String, ForeignKey, create_engine, inspect
-from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy.orm import declarative_base, relationship, Session
 
 Base = declarative_base()
 
@@ -11,7 +11,7 @@ class User(Base):
     name = Column(String)
     full_name = Column(String)
 
-    address = relationship(
+    addresses = relationship(
         'Address', back_populates='user', cascade='all, delete-orphan'
     )
 
@@ -39,3 +39,23 @@ Base.metadata.create_all(engine)
 
 inspetor_engine = inspect(engine)
 
+with Session(engine) as session:
+    pedro = User(
+        name='Pedro',
+        full_name='Pedro Henrique do Prado',
+        addresses=[Address(email_address='pedroppaiva1@hotmail.com')]
+    )
+    mel = User(
+        name='Melyssa',
+        full_name='Melyssa Caroline',
+        addresses=[Address(email_address='melyssacaroline@hotmail.com'),
+                Address(email_address='melyssacaroline@gmail.com')]
+    )
+    carlos = User(
+        name='Carlos',
+        full_name='Carlos Paiva'
+    )
+
+    session.add_all([pedro, mel, carlos])
+
+    session.commit()
