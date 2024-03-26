@@ -1,5 +1,5 @@
 import sqlalchemy
-from sqlalchemy import Column, Integer, String, ForeignKey, create_engine, inspect, select
+from sqlalchemy import Column, Integer, String, ForeignKey, create_engine, inspect, select, func
 from sqlalchemy.orm import declarative_base, relationship, Session
 
 Base = declarative_base()
@@ -60,10 +60,33 @@ with Session(engine) as session:
 
     session.commit()
 
+print("Recuperando usúarios a partir de condições de filtragem")
 stmt = select(User).where(User.name.in_(['Pedro','Melyssa']))
-for user in session.scalars(stmt):
-    print(user)
+for result in session.scalars(stmt):
+    print(result)
 
+print("\nRecuperando os endereços de e-mail de Melyssa")
 stmt_address = select(Address).where(Address.user_id.in_([2]))
-for address in session.scalars(stmt_address):
-    print(address)
+for result in session.scalars(stmt_address):
+    print(result)
+
+print("\nRecuperando infos de maneira ordenada")
+stmt_order_by = select(User).order_by(User.full_name.desc())
+for result in session.scalars(stmt_order_by):
+    print(result)
+
+print("\nRecuperando infos com join SCALARS")
+stmt_join = select(User.full_name, Address.email_address).join_from(Address, User)
+for result in session.scalars(stmt_join):
+    print(result)
+
+print("\nExecutando statement a partir da connection")
+connection = engine.connect()
+results = connection.execute(stmt_join).fetchall()
+for result in results:
+    print(result)
+
+print("\nTotal de registros de User")
+stmt_count = select(func.count('*')).select_from(User)
+for result in session.scalars(stmt_count):
+    print(result)
