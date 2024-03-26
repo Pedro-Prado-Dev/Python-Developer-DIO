@@ -1,5 +1,5 @@
 import sqlalchemy
-from sqlalchemy import Column, Integer, String, ForeignKey, create_engine, inspect
+from sqlalchemy import Column, Integer, String, ForeignKey, create_engine, inspect, select
 from sqlalchemy.orm import declarative_base, relationship, Session
 
 Base = declarative_base()
@@ -59,3 +59,11 @@ with Session(engine) as session:
     session.add_all([pedro, mel, carlos])
 
     session.commit()
+
+stmt = select(User).where(User.name.in_(['Pedro','Melyssa']))
+for user in session.scalars(stmt):
+    print(user)
+
+stmt_address = select(Address).where(Address.user_id.in_([2]))
+for address in session.scalars(stmt_address):
+    print(address)
