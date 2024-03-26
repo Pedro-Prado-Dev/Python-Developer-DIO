@@ -1,8 +1,8 @@
-from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, ForeignKey
+from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, ForeignKey, text
 
-engine = create_engine('sqlite:///:memory:')
+engine = create_engine('sqlite:///:memory')
 
-metadata = MetaData(schema='teste')
+metadata = MetaData()
 user = Table(
     'user',
     metadata,
@@ -25,7 +25,9 @@ user_prefs = Table(
 for table in metadata.sorted_tables:
     print(table)
 
-metadata_bd = MetaData(schema='data')
+#metadata.create_all(engine)
+
+metadata_bd = MetaData()
 financials_table = Table(
     'financials',
     metadata_bd,
@@ -35,4 +37,8 @@ financials_table = Table(
 
 print('Infos da tabela financials')
 print(financials_table.primary_key)
+print(financials_table.constraints)
 
+
+sql = text('selct * from user')
+result = engine.execute(text)
